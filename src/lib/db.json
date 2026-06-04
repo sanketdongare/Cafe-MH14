@@ -1,0 +1,301 @@
+{
+  "menu": [
+    {
+      "id": "m1",
+      "name": "Royal Saffron Masala Chai",
+      "description": "Brewed black tea infused with ginger, green cardamom, cloves, and premium Kashmiri saffron, simmered with whole milk.",
+      "price": 120,
+      "category": "Tea",
+      "image": "/images/masala_chai.png",
+      "available": false,
+      "options": [
+        {
+          "name": "Milk Type",
+          "choices": [
+            {
+              "name": "Whole Milk",
+              "priceModifier": 0
+            },
+            {
+              "name": "Oat Milk",
+              "priceModifier": 30
+            },
+            {
+              "name": "Almond Milk",
+              "priceModifier": 30
+            }
+          ]
+        },
+        {
+          "name": "Sweetness",
+          "choices": [
+            {
+              "name": "Organic Honey",
+              "priceModifier": 0
+            },
+            {
+              "name": "Less Sweet",
+              "priceModifier": 0
+            },
+            {
+              "name": "Sugar-Free",
+              "priceModifier": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m2",
+      "name": "South Indian Filter Kaapi",
+      "description": "Traditional double-filtered chicory blend, frothed by hand and served foaming in a brass dabarah.",
+      "price": 90,
+      "category": "Coffee",
+      "image": "/images/filter_kaapi.png",
+      "available": true,
+      "options": [
+        {
+          "name": "Style",
+          "choices": [
+            {
+              "name": "Traditional Foam",
+              "priceModifier": 0
+            },
+            {
+              "name": "Strong Brew",
+              "priceModifier": 0
+            },
+            {
+              "name": "Light Brew",
+              "priceModifier": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m3",
+      "name": "Paneer Tikka Croissant",
+      "description": "Flaky puff pastry stuffed with tandoori-spiced cottage cheese cubes, bell peppers, and fresh coriander mint chutney.",
+      "price": 180,
+      "category": "Bakery",
+      "image": "/images/paneer_croissant.png",
+      "available": true,
+      "options": [
+        {
+          "name": "Serving",
+          "choices": [
+            {
+              "name": "Warm & Toasted",
+              "priceModifier": 0
+            },
+            {
+              "name": "Room Temperature",
+              "priceModifier": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m4",
+      "name": "Cardamom Pistachio Kulfi Scone",
+      "description": "Freshly baked fusion scone flavored with kulfi spices, chopped pistachios, and a delicate cardamom glaze.",
+      "price": 150,
+      "category": "Bakery",
+      "image": "/images/kulfi_scone.png",
+      "available": true,
+      "options": [
+        {
+          "name": "Cream Option",
+          "choices": [
+            {
+              "name": "No Cream",
+              "priceModifier": 0
+            },
+            {
+              "name": "Clotted Cream",
+              "priceModifier": 40
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m5",
+      "name": "Rose Petal Gulkand Panna Cotta",
+      "description": "Silky panna cotta flavored with organic rosewater, layered with sweet gulkand (rose petal jam) and edible silver leaf.",
+      "price": 250,
+      "category": "Desserts",
+      "image": "/images/rose_panna_cotta.png",
+      "available": true,
+      "options": []
+    },
+    {
+      "id": "m6",
+      "name": "Alphonso Mango Lassi Parfait",
+      "description": "Vibrant layers of fresh Alphonso mango pulp, thick cardamom yogurt, topped with roasted almond slivers.",
+      "price": 220,
+      "category": "Desserts",
+      "image": "/images/mango_parfait.png",
+      "available": true,
+      "options": []
+    }
+  ],
+  "orders": [
+    {
+      "id": "CF-1001",
+      "customerName": "Sarah Jenkins",
+      "items": [
+        {
+          "id": "oi1",
+          "menuItemId": "m1",
+          "name": "Royal Saffron Masala Chai",
+          "quantity": 1,
+          "selectedOptions": {
+            "Milk Type": "Whole Milk",
+            "Sweetness": "Organic Honey"
+          },
+          "price": 120
+        },
+        {
+          "id": "oi2",
+          "menuItemId": "m3",
+          "name": "Paneer Tikka Croissant",
+          "quantity": 1,
+          "selectedOptions": {
+            "Serving": "Warm & Toasted"
+          },
+          "price": 180
+        }
+      ],
+      "total": 300,
+      "notes": "Please ensure the Paneer Croissant is heated well!",
+      "status": "Completed",
+      "createdAt": "2026-05-25T07:00:00.000Z"
+    },
+    {
+      "id": "CF-1002",
+      "customerName": "James Miller",
+      "items": [
+        {
+          "id": "oi3",
+          "menuItemId": "m2",
+          "name": "South Indian Filter Kaapi",
+          "quantity": 2,
+          "selectedOptions": {
+            "Style": "Traditional Foam"
+          },
+          "price": 90
+        }
+      ],
+      "total": 180,
+      "status": "Completed",
+      "createdAt": "2026-05-25T08:00:00.000Z"
+    },
+    {
+      "id": "CF-1003",
+      "customerName": "Sanket",
+      "items": [
+        {
+          "id": "rbllkgd",
+          "menuItemId": "m5",
+          "name": "Rose Petal Gulkand Panna Cotta",
+          "quantity": 1,
+          "selectedOptions": {},
+          "price": 250
+        },
+        {
+          "id": "jlnnuiz",
+          "menuItemId": "m6",
+          "name": "Alphonso Mango Lassi Parfait",
+          "quantity": 1,
+          "selectedOptions": {},
+          "price": 220
+        }
+      ],
+      "total": 470,
+      "notes": "ho",
+      "status": "Completed",
+      "createdAt": "2026-05-25T05:46:49.857Z"
+    },
+    {
+      "id": "CF-1004",
+      "customerName": "Sanket ",
+      "items": [
+        {
+          "id": "wpgnsqf",
+          "menuItemId": "m1",
+          "name": "Royal Saffron Masala Chai",
+          "quantity": 1,
+          "selectedOptions": {
+            "Milk Type": "Whole Milk",
+            "Sweetness": "Organic Honey"
+          },
+          "price": 120
+        },
+        {
+          "id": "069hcij",
+          "menuItemId": "m2",
+          "name": "South Indian Filter Kaapi",
+          "quantity": 1,
+          "selectedOptions": {
+            "Style": "Traditional Foam"
+          },
+          "price": 90
+        }
+      ],
+      "total": 210,
+      "notes": "Extra hot",
+      "status": "Completed",
+      "createdAt": "2026-05-29T09:25:13.220Z"
+    },
+    {
+      "id": "CF-1005",
+      "customerName": "Sanket",
+      "items": [
+        {
+          "id": "xf5m6vg",
+          "menuItemId": "m5",
+          "name": "Rose Petal Gulkand Panna Cotta",
+          "quantity": 1,
+          "selectedOptions": {},
+          "price": 250
+        },
+        {
+          "id": "swrrpos",
+          "menuItemId": "m6",
+          "name": "Alphonso Mango Lassi Parfait",
+          "quantity": 1,
+          "selectedOptions": {},
+          "price": 220
+        }
+      ],
+      "total": 470,
+      "notes": "reygt",
+      "status": "Completed",
+      "createdAt": "2026-05-30T04:30:17.175Z"
+    },
+    {
+      "id": "CF-1006",
+      "customerName": "sfsd",
+      "items": [
+        {
+          "id": "om4vl4j",
+          "menuItemId": "m2",
+          "name": "South Indian Filter Kaapi",
+          "quantity": 1,
+          "selectedOptions": {
+            "Style": "Strong Brew"
+          },
+          "price": 90
+        }
+      ],
+      "total": 90,
+      "notes": "sdfsd",
+      "status": "Completed",
+      "createdAt": "2026-05-30T10:37:30.301Z"
+    }
+  ],
+  "orderCounter": 1007
+}

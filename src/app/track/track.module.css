@@ -1,0 +1,386 @@
+.trackContainer {
+  max-width: 800px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Tracking Input Screen */
+.searchCard {
+  padding: 3rem 2rem;
+  border-radius: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.searchCard h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.searchCard p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  max-width: 400px;
+}
+
+.searchForm {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 460px;
+}
+
+.searchInputLarge {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 0.85rem 1.25rem;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.searchInputLarge:focus {
+  border-color: var(--accent-gold);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);
+}
+
+.searchBtn {
+  font-size: 0.95rem;
+  padding: 0.85rem 1.75rem;
+}
+
+/* Tracking Details Screen */
+.orderHeaderCard {
+  padding: 1.75rem 2rem;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.orderHeaderLeft h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  letter-spacing: 0.02em;
+}
+
+.orderHeaderLeft p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+/* Stepper Track */
+.stepperCard {
+  padding: 3rem 2rem;
+  border-radius: 20px;
+  position: relative;
+}
+
+.stepperWrapper {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.stepperLine {
+  position: absolute;
+  top: 24px;
+  left: 40px;
+  right: 40px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  z-index: 1;
+  border-radius: 2px;
+}
+
+.stepperLineProgress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-amber), var(--accent-gold));
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px var(--accent-gold);
+}
+
+.stepNode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  width: 100px;
+  text-align: center;
+}
+
+.stepCircle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: 2px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: var(--transition-smooth);
+  margin-bottom: 0.75rem;
+}
+
+.stepCircle svg {
+  width: 22px;
+  height: 22px;
+}
+
+.stepNodeActive .stepCircle {
+  background: var(--bg-secondary);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+.stepNodeCompleted .stepCircle {
+  background: linear-gradient(135deg, var(--accent-amber), var(--accent-gold));
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 10px rgba(217, 119, 6, 0.3);
+}
+
+.stepLabel {
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: var(--transition-smooth);
+}
+
+.stepNodeActive .stepLabel {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.stepNodeCompleted .stepLabel {
+  color: var(--accent-gold);
+}
+
+.stepDesc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+  max-width: 120px;
+}
+
+/* Cancelled Alert Box */
+.cancelledAlert {
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #f87171;
+  margin-bottom: 1.5rem;
+}
+
+.cancelledAlert svg {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.cancelledAlert h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f87171;
+  margin-bottom: 0.15rem;
+}
+
+.cancelledAlert p {
+  font-size: 0.88rem;
+  color: rgba(248, 113, 113, 0.8);
+}
+
+/* Summary Grid layout */
+.summaryGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 2rem;
+}
+
+.itemsCard, .receiptCard {
+  padding: 2rem;
+  border-radius: 16px;
+}
+
+.itemsCard h3, .receiptCard h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.5rem;
+}
+
+.itemsList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.orderItemRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.orderItemDetails {
+  flex: 1;
+}
+
+.orderItemName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.qtyTag {
+  color: var(--accent-gold);
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(245, 158, 11, 0.08);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
+
+.orderItemOpts {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.orderItemPrice {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.notesBox {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent-gold);
+}
+
+.notesLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  margin-bottom: 0.25rem;
+}
+
+.notesText {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Receipt Details */
+.receiptRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.receiptTotalRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.metaRow {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.metaRow span {
+  display: flex;
+  justify-content: space-between;
+}
+
+.metaVal {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stepperWrapper {
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-start;
+    padding-left: 2rem;
+  }
+  
+  .stepperLine {
+    top: 40px;
+    left: 44px;
+    width: 4px;
+    height: calc(100% - 80px);
+  }
+  
+  .stepperLineProgress {
+    width: 100% !important;
+    height: 0%;
+    transition: height 0.6s ease;
+  }
+  
+  .stepNode {
+    flex-direction: row;
+    width: 100%;
+    text-align: left;
+    gap: 1.25rem;
+  }
+  
+  .stepCircle {
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  
+  .stepDesc {
+    max-width: none;
+  }
+}
