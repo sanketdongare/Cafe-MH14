@@ -295,7 +295,43 @@
       "notes": "sdfsd",
       "status": "Completed",
       "createdAt": "2026-05-30T10:37:30.301Z"
+    },
+    {
+      "id": "CF-1007",
+      "customerName": "Ashwini",
+      "items": [
+        {
+          "id": "37mwvy2",
+          "menuItemId": "m2",
+          "name": "South Indian Filter Kaapi",
+          "quantity": 1,
+          "selectedOptions": {
+            "Style": "Traditional Foam"
+          },
+          "price": 90
+        },
+        {
+          "id": "bqkqdd0",
+          "menuItemId": "m5",
+          "name": "Rose Petal Gulkand Panna Cotta",
+          "quantity": 1,
+          "selectedOptions": {},
+          "price": 250
+        },
+        {
+          "id": "yyvcqww",
+          "menuItemId": "m6",
+          "name": "Alphonso Mango Lassi Parfait",
+          "quantity": 1,
+          "selectedOptions": {},
+          "price": 220
+        }
+      ],
+      "total": 560,
+      "notes": "Pika",
+      "status": "Completed",
+      "createdAt": "2026-06-09T06:18:41.760Z"
     }
   ],
-  "orderCounter": 1007
+  "orderCounter": 1008
 }

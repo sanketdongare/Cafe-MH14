@@ -16,8 +16,8 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { username, password } = body;
 
-    // Check credentials (username: Sanket, password: Sanket@123)
-    if (username === 'Sanket' && password === 'Sanket@123') {
+    // Check credentials (username: sanket, password: Sanket@123)
+    if (username && username.toLowerCase() === 'sanket' && password === 'Sanket@123') {
       const cookieStore = await cookies();
       cookieStore.set('admin_session', 'authenticated', {
         httpOnly: false, // Set false so client can easily read or double check if needed, but cookies are sent automatically
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
         path: '/',
         maxAge: 60 * 60 * 24 // 1 day session
       });
-      return NextResponse.json({ success: true, user: 'Sanket' });
+      return NextResponse.json({ success: true, user: 'Sanket Dongare' });
     }
 
     return NextResponse.json({ error: 'Invalid username or password' }, { status: 401 });
