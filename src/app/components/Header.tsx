@@ -53,16 +53,16 @@ export default function Header() {
           </li>
           <li>
             <Link
-              href="/#shop"
-              className={styles.navLink}
+              href="/merchandise"
+              className={`${styles.navLink} ${isActive('/merchandise') ? styles.navLinkActive : ''}`}
             >
               🛍️ Merchandise
             </Link>
           </li>
           <li>
             <Link
-              href="/#gifting"
-              className={styles.navLink}
+              href="/corporate-gifting"
+              className={`${styles.navLink} ${isActive('/corporate-gifting') ? styles.navLinkActive : ''}`}
             >
               🎁 Corporate Gifting
             </Link>
@@ -114,12 +114,12 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <Link href="/#shop" className={styles.mobileNavLink} onClick={() => setMobileOpen(false)}>
+                <Link href="/merchandise" className={styles.mobileNavLink} onClick={() => setMobileOpen(false)}>
                   🛍️ Lounge Merchandise
                 </Link>
               </li>
               <li>
-                <Link href="/#gifting" className={styles.mobileNavLink} onClick={() => setMobileOpen(false)}>
+                <Link href="/corporate-gifting" className={styles.mobileNavLink} onClick={() => setMobileOpen(false)}>
                   🎁 Corporate Gifting
                 </Link>
               </li>
