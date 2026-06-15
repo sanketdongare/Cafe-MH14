@@ -1,0 +1,305 @@
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8rem 2rem 4rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  color: var(--text-primary);
+}
+
+.heroSection {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.pageTitle {
+  font-family: var(--font-heading);
+  font-size: 2.75rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pageSubtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Success Card Receipt */
+.successCard {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 3.5rem 2.5rem;
+  border-radius: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.successIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  color: var(--status-ready);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(5, 150, 105, 0.08);
+  border: 1px solid rgba(5, 150, 105, 0.15);
+  margin-bottom: 0.5rem;
+}
+
+.successCard h2 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.successIntro {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.receiptGrid {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.receiptRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  border-bottom: 1px dashed var(--glass-border);
+  padding-bottom: 0.6rem;
+}
+
+.receiptRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.receiptRow strong {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.highlightVal {
+  color: var(--accent-gold);
+  font-weight: 700;
+  font-family: var(--font-heading);
+}
+
+.statusBadge {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  color: var(--accent-amber);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.successInstruction {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.successInstruction strong {
+  color: var(--text-primary);
+}
+
+/* Split Layout: Info & Form */
+.formSplitLayout {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Info Column */
+.infoColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.infoColumn h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.infoColumn > p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.featurePoints {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.featurePoint {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.featurePointIcon {
+  font-size: 1.5rem;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.featurePoint strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+  color: var(--text-primary);
+}
+
+.featurePoint p {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.contactDetails {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.contactDetails strong {
+  color: var(--text-primary);
+  margin-top: 0.5rem;
+}
+
+.contactDetails strong:first-child {
+  margin-top: 0;
+}
+
+/* Form Card */
+.formCard {
+  padding: 2.5rem;
+  border-radius: 16px;
+}
+
+.formCard h2 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formGroup label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.inputField {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  transition: var(--transition-smooth);
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.08);
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .formSplitLayout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 7rem 1.5rem 3rem;
+    gap: 2.5rem;
+  }
+  .pageTitle {
+    font-size: 2.25rem;
+  }
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .formCard, .successCard {
+    padding: 2rem 1.5rem;
+  }
+}

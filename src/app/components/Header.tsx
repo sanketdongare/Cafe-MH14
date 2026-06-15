@@ -64,7 +64,23 @@ export default function Header() {
               href="/corporate-gifting"
               className={`${styles.navLink} ${isActive('/corporate-gifting') ? styles.navLinkActive : ''}`}
             >
-              🎁 Corporate Gifting
+              🎁 Gifting
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/reviews"
+              className={`${styles.navLink} ${isActive('/reviews') ? styles.navLinkActive : ''}`}
+            >
+              ⭐ Reviews
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/reserve"
+              className={`${styles.navLink} ${isActive('/reserve') ? styles.navLinkActive : ''}`}
+            >
+              📅 Book Table
             </Link>
           </li>
           <li>
@@ -121,6 +137,16 @@ export default function Header() {
               <li>
                 <Link href="/corporate-gifting" className={styles.mobileNavLink} onClick={() => setMobileOpen(false)}>
                   🎁 Corporate Gifting
+                </Link>
+              </li>
+              <li>
+                <Link href="/reviews" className={styles.mobileNavLink} onClick={() => setMobileOpen(false)}>
+                  ⭐ Customer Reviews
+                </Link>
+              </li>
+              <li>
+                <Link href="/reserve" className={styles.mobileNavLink} onClick={() => setMobileOpen(false)}>
+                  📅 Book a Table
                 </Link>
               </li>
               <li>

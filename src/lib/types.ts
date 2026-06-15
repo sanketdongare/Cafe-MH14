@@ -37,3 +37,34 @@ export interface Order {
 export function formatPrice(price: number): string {
   return `₹${Math.round(price)}`;
 }
+
+export interface Review {
+  id: string;
+  authorName: string;
+  rating: number; // 1-5
+  text: string;
+  photoUrl?: string;
+  createdAt: string;
+}
+
+export interface Reservation {
+  id: string;
+  customerName: string;
+  email: string;
+  phone: string;
+  date: string; // YYYY-MM-DD
+  time: string; // HH:MM
+  guests: number;
+  notes?: string;
+  status: 'Pending' | 'Confirmed' | 'Completed' | 'Cancelled';
+  createdAt: string;
+}
+
+export interface InventoryItem {
+  id: string;
+  name: string;
+  stock: number;
+  minStock: number;
+  unit: string;
+}
+

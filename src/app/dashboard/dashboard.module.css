@@ -553,3 +553,52 @@
   box-shadow: 0 0 10px var(--accent-gold);
   transform: scale(1.05);
 }
+
+/* ══════════════ Low-Stock Banner ══════════════ */
+.alertBanner {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+.alertIcon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.alertText {
+  color: #f87171;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.alertText strong {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+/* ══════════════ Analytics & Sales Report ══════════════ */
+.analyticsLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.salesReportSection {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.04);
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+

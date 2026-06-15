@@ -333,5 +333,104 @@
       "createdAt": "2026-06-09T06:18:41.760Z"
     }
   ],
-  "orderCounter": 1008
+  "orderCounter": 1008,
+  "reviews": [
+    {
+      "id": "rev1",
+      "authorName": "Aarav Sharma",
+      "rating": 5,
+      "text": "The Paneer Tikka Croissant is incredibly flaky and spicy! Best cafe fusion food in Pune.",
+      "photoUrl": "/images/paneer_croissant.png",
+      "createdAt": "2026-06-10T10:00:00.000Z"
+    },
+    {
+      "id": "rev2",
+      "authorName": "Neha Patil",
+      "rating": 4,
+      "text": "Filter Kaapi is spot on. Foam is perfect. A bit crowded during weekends but totally worth it.",
+      "photoUrl": "",
+      "createdAt": "2026-06-11T14:30:00.000Z"
+    },
+    {
+      "id": "rev3",
+      "authorName": "Raj Malhotra",
+      "rating": 5,
+      "text": "Amazing Saffron Masala Chai and Mango Parfait. Beautiful presentation!",
+      "photoUrl": "/images/mango_parfait.png",
+      "createdAt": "2026-06-12T08:15:00.000Z"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "RES-1001",
+      "customerName": "Vikram Malhotra",
+      "email": "vikram@example.com",
+      "phone": "+91 98765 43210",
+      "date": "2026-06-16",
+      "time": "18:00",
+      "guests": 4,
+      "notes": "Prefer window seating if possible.",
+      "status": "Confirmed",
+      "createdAt": "2026-06-15T09:00:00.000Z"
+    }
+  ],
+  "reservationCounter": 1002,
+  "inventory": [
+    {
+      "id": "i1",
+      "name": "Coffee Beans",
+      "stock": 12.5,
+      "minStock": 5.0,
+      "unit": "kg"
+    },
+    {
+      "id": "i2",
+      "name": "Chicory Powder",
+      "stock": 3.0,
+      "minStock": 2.0,
+      "unit": "kg"
+    },
+    {
+      "id": "i3",
+      "name": "Kashmiri Saffron",
+      "stock": 15,
+      "minStock": 25,
+      "unit": "g"
+    },
+    {
+      "id": "i4",
+      "name": "Paneer (Cottage Cheese)",
+      "stock": 8.0,
+      "minStock": 4.0,
+      "unit": "kg"
+    },
+    {
+      "id": "i5",
+      "name": "Cultured Butter",
+      "stock": 10.0,
+      "minStock": 3.0,
+      "unit": "kg"
+    },
+    {
+      "id": "i6",
+      "name": "Whole Milk",
+      "stock": 45.0,
+      "minStock": 20.0,
+      "unit": "L"
+    },
+    {
+      "id": "i7",
+      "name": "Rosewater & Gulkand",
+      "stock": 2.5,
+      "minStock": 1.0,
+      "unit": "L"
+    },
+    {
+      "id": "i8",
+      "name": "Pistachios",
+      "stock": 1.2,
+      "minStock": 2.5,
+      "unit": "kg"
+    }
+  ]
 }

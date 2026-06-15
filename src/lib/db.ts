@@ -1,11 +1,15 @@
 import fs from 'fs';
 import path from 'path';
-import { MenuItem, Order, OrderItem } from './types';
+import { MenuItem, Order, OrderItem, Review, Reservation, InventoryItem } from './types';
 
 interface DBState {
   menu: MenuItem[];
   orders: Order[];
   orderCounter: number;
+  reviews: Review[];
+  reservations: Reservation[];
+  reservationCounter: number;
+  inventory: InventoryItem[];
 }
 
 const dbFilePath = path.join(process.cwd(), 'src/lib/db.json');
@@ -20,7 +24,15 @@ class MockDatabase {
     } catch (error) {
       console.error('Error reading JSON DB file:', error);
     }
-    return { menu: [], orders: [], orderCounter: 1001 };
+    return {
+      menu: [],
+      orders: [],
+      orderCounter: 1001,
+      reviews: [],
+      reservations: [],
+      reservationCounter: 1001,
+      inventory: []
+    };
   }
 
   private writeState(state: DBState): void {
@@ -103,6 +115,70 @@ class MockDatabase {
     state.orders[idx].status = status;
     this.writeState(state);
     return state.orders[idx];
+  }
+
+  // Reviews Methods
+  getReviews(): Review[] {
+    return this.readState().reviews || [];
+  }
+
+  addReview(review: Omit<Review, 'id' | 'createdAt'>): Review {
+    const state = this.readState();
+    if (!state.reviews) state.reviews = [];
+    const newReview: Review = {
+      ...review,
+      id: `rev${state.reviews.length + 1}`,
+      createdAt: new Date().toISOString()
+    };
+    state.reviews.push(newReview);
+    this.writeState(state);
+    return newReview;
+  }
+
+  // Reservations Methods
+  getReservations(): Reservation[] {
+    return this.readState().reservations || [];
+  }
+
+  addReservation(reservation: Omit<Reservation, 'id' | 'status' | 'createdAt'>): Reservation {
+    const state = this.readState();
+    if (!state.reservations) state.reservations = [];
+    if (!state.reservationCounter) state.reservationCounter = 1001;
+    const id = `RES-${state.reservationCounter++}`;
+    const newReservation: Reservation = {
+      ...reservation,
+      id,
+      status: 'Pending',
+      createdAt: new Date().toISOString()
+    };
+    state.reservations.push(newReservation);
+    this.writeState(state);
+    return newReservation;
+  }
+
+  updateReservationStatus(id: string, status: Reservation['status']): Reservation | undefined {
+    const state = this.readState();
+    if (!state.reservations) return undefined;
+    const idx = state.reservations.findIndex((r) => r.id === id);
+    if (idx === -1) return undefined;
+    state.reservations[idx].status = status;
+    this.writeState(state);
+    return state.reservations[idx];
+  }
+
+  // Inventory Methods
+  getInventory(): InventoryItem[] {
+    return this.readState().inventory || [];
+  }
+
+  updateInventoryItem(id: string, stock: number): InventoryItem | undefined {
+    const state = this.readState();
+    if (!state.inventory) return undefined;
+    const idx = state.inventory.findIndex((i) => i.id === id);
+    if (idx === -1) return undefined;
+    state.inventory[idx].stock = stock;
+    this.writeState(state);
+    return state.inventory[idx];
   }
 }
 

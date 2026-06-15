@@ -21,10 +21,16 @@ export default function DashboardPage() {
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   // Data State
-  const [activeTab, setActiveTab] = useState<'orders' | 'history' | 'menu' | 'analytics'>('orders');
+  const [activeTab, setActiveTab] = useState<'orders' | 'history' | 'reservations' | 'inventory' | 'menu' | 'analytics'>('orders');
   const [orders, setOrders] = useState<Order[]>([]);
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
+  
+  // New States
+  const [reservations, setReservations] = useState<any[]>([]);
+  const [loadingReservations, setLoadingReservations] = useState(true);
+  const [inventory, setInventory] = useState<any[]>([]);
+  const [loadingInventory, setLoadingInventory] = useState(true);
 
   // Add Menu Item Form State
   const [newItemName, setNewItemName] = useState('');
@@ -70,8 +76,24 @@ export default function DashboardPage() {
           const menuData = await menuRes.json();
           setMenu(menuData);
         }
+        
+        // Fetch Reservations
+        const resRes = await fetch('/api/reservations');
+        if (resRes.ok) {
+          const resData = await resRes.json();
+          setReservations(resData);
+        }
+        setLoadingReservations(false);
+
+        // Fetch Inventory
+        const invRes = await fetch('/api/inventory');
+        if (invRes.ok) {
+          const invData = await invRes.json();
+          setInventory(invData);
+        }
+        setLoadingInventory(false);
       } catch (err) {
-        console.error('Error fetching menu:', err);
+        console.error('Error fetching initial dashboard data:', err);
       }
     }
     
@@ -184,6 +206,49 @@ export default function DashboardPage() {
       }
     } catch (err) {
       console.error('Error cancelling order:', err);
+    }
+  };
+
+  // Reservation status update handler
+  const handleUpdateReservationStatus = async (resId: string, nextStatus: string) => {
+    try {
+      const res = await fetch('/api/reservations', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: resId, status: nextStatus }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setReservations((prev) =>
+          prev.map((r) => (r.id === resId ? updated : r))
+        );
+      }
+    } catch (err) {
+      console.error('Error updating reservation:', err);
+    }
+  };
+
+  // Inventory stock update handler
+  const handleUpdateStock = async (itemId: string, newStock: number) => {
+    if (newStock < 0) return;
+    try {
+      const res = await fetch('/api/inventory', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: itemId, stock: newStock }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setInventory((prev) =>
+          prev.map((item) => (item.id === itemId ? updated : item))
+        );
+      }
+    } catch (err) {
+      console.error('Error updating stock:', err);
     }
   };
 
@@ -306,6 +371,23 @@ export default function DashboardPage() {
     }
   };
 
+  // Low Stock Items
+  const lowStockItems = inventory.filter((item) => item.stock <= item.minStock);
+
+  // Sales breakdown by menu item
+  const salesBreakdown: Record<string, { name: string; quantity: number; revenue: number }> = {};
+  completedOrders.forEach((o) => {
+    o.items.forEach((item) => {
+      if (!salesBreakdown[item.menuItemId]) {
+        salesBreakdown[item.menuItemId] = { name: item.name, quantity: 0, revenue: 0 };
+      }
+      salesBreakdown[item.menuItemId].quantity += item.quantity;
+      salesBreakdown[item.menuItemId].revenue += item.price * item.quantity;
+    });
+  });
+
+  const sortedSalesBreakdown = Object.values(salesBreakdown).sort((a, b) => b.quantity - a.quantity);
+
   if (checkingAuth) {
     return (
       <div style={{ textAlign: 'center', padding: '10rem 2rem', color: 'var(--text-muted)' }}>
@@ -341,6 +423,18 @@ export default function DashboardPage() {
               History
             </button>
             <button
+              onClick={() => setActiveTab('reservations')}
+              className={`${styles.tabBtn} ${activeTab === 'reservations' ? styles.tabBtnActive : ''}`}
+            >
+              Bookings ({reservations.filter((r) => r.status === 'Pending').length})
+            </button>
+            <button
+              onClick={() => setActiveTab('inventory')}
+              className={`${styles.tabBtn} ${activeTab === 'inventory' ? styles.tabBtnActive : ''}`}
+            >
+              Inventory {lowStockItems.length > 0 && '(⚠️)'}
+            </button>
+            <button
               onClick={() => setActiveTab('menu')}
               className={`${styles.tabBtn} ${activeTab === 'menu' ? styles.tabBtnActive : ''}`}
             >
@@ -358,6 +452,17 @@ export default function DashboardPage() {
           </button>
         </div>
       </div>
+
+      {/* Low Stock Warning Banner */}
+      {lowStockItems.length > 0 && (
+        <div className={styles.alertBanner}>
+          <span className={styles.alertIcon}>⚠️</span>
+          <div className={styles.alertText}>
+            <strong>Low-Stock Warning:</strong> The following ingredients have dropped below critical thresholds:{' '}
+            {lowStockItems.map((item) => `${item.name} (${item.stock} ${item.unit} remaining)`).join(', ')}.
+          </div>
+        </div>
+      )}
 
       {/* RENDER ACTIVE ORDERS TAB */}
       {activeTab === 'orders' && (
@@ -670,9 +775,200 @@ export default function DashboardPage() {
         </div>
       )}
 
+
+      {/* RENDER RESERVATIONS TAB */}
+      {activeTab === 'reservations' && (
+        <div>
+          {loadingReservations ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+              Loading bookings...
+            </div>
+          ) : reservations.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '5rem', color: 'var(--text-muted)' }} className="glass">
+              No reservations found.
+            </div>
+          ) : (
+            <div className={styles.historyTableWrapper}>
+              <table className={styles.historyTable}>
+                <thead>
+                  <tr>
+                    <th>Ref ID</th>
+                    <th>Customer Details</th>
+                    <th>Date &amp; Time</th>
+                    <th>Guests</th>
+                    <th>Requests</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reservations.map((r) => (
+                    <tr key={r.id}>
+                      <td style={{ fontWeight: 700, color: 'var(--accent-gold)' }}>{r.id}</td>
+                      <td>
+                        <div style={{ fontWeight: 600 }}>{r.customerName}</div>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{r.email}</div>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{r.phone}</div>
+                      </td>
+                      <td>
+                        <div>{new Date(r.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</div>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>at {r.time}</div>
+                      </td>
+                      <td style={{ fontWeight: 600 }}>{r.guests} Guests</td>
+                      <td style={{ fontSize: '0.82rem', maxWidth: '200px', overflowWrap: 'break-word', fontStyle: r.notes ? 'italic' : 'normal' }}>
+                        {r.notes || <span style={{ color: 'var(--text-muted)' }}>None</span>}
+                      </td>
+                      <td>
+                        <span className={`badge badge-${r.status.toLowerCase()}`}>{r.status}</span>
+                      </td>
+                      <td>
+                        <div style={{ display: 'flex', gap: '0.4rem' }}>
+                          {r.status === 'Pending' && (
+                            <>
+                              <button
+                                onClick={() => handleUpdateReservationStatus(r.id, 'Confirmed')}
+                                className="btn-primary"
+                                style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}
+                              >
+                                Confirm
+                              </button>
+                              <button
+                                onClick={() => handleUpdateReservationStatus(r.id, 'Cancelled')}
+                                className={`${styles.actionBtn} ${styles.actionBtnCancel}`}
+                                style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}
+                              >
+                                Cancel
+                              </button>
+                            </>
+                          )}
+                          {r.status === 'Confirmed' && (
+                            <>
+                              <button
+                                onClick={() => handleUpdateReservationStatus(r.id, 'Completed')}
+                                className="btn-primary"
+                                style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem', background: '#059669', borderColor: '#059669' }}
+                              >
+                                Seated
+                              </button>
+                              <button
+                                onClick={() => handleUpdateReservationStatus(r.id, 'Cancelled')}
+                                className={`${styles.actionBtn} ${styles.actionBtnCancel}`}
+                                style={{ padding: '0.3rem 0.6rem', fontSize: '0.75rem' }}
+                              >
+                                Cancel
+                              </button>
+                            </>
+                          )}
+                          {['Completed', 'Cancelled'].includes(r.status) && (
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Closed</span>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* RENDER INVENTORY TAB */}
+      {activeTab === 'inventory' && (
+        <div>
+          {loadingInventory ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+              Loading inventory list...
+            </div>
+          ) : (
+            <div className={styles.historyTableWrapper}>
+              <table className={styles.historyTable}>
+                <thead>
+                  <tr>
+                    <th>Ingredient Name</th>
+                    <th>Stock Level</th>
+                    <th>Min Limit</th>
+                    <th>Unit</th>
+                    <th>Status</th>
+                    <th>Quick Adjustments</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {inventory.map((item) => {
+                    const isOutOfStock = item.stock <= 0;
+                    const isLowStock = item.stock <= item.minStock && !isOutOfStock;
+                    return (
+                      <tr key={item.id}>
+                        <td style={{ fontWeight: 700 }}>{item.name}</td>
+                        <td>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <input
+                              type="number"
+                              step="any"
+                              value={item.stock}
+                              onChange={(e) => handleUpdateStock(item.id, parseFloat(e.target.value) || 0)}
+                              className={styles.inputField}
+                              style={{ width: '80px', padding: '0.3rem 0.5rem', textAlign: 'center' }}
+                            />
+                          </div>
+                        </td>
+                        <td style={{ color: 'var(--text-secondary)' }}>{item.minStock}</td>
+                        <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{item.unit}</td>
+                        <td>
+                          {isOutOfStock && (
+                            <span className="badge badge-cancelled" style={{ background: '#ef4444', color: 'white' }}>
+                              Out of Stock
+                            </span>
+                          )}
+                          {isLowStock && (
+                            <span className="badge badge-received" style={{ background: '#fbbf24', color: '#78350f' }}>
+                              Low Stock
+                            </span>
+                          )}
+                          {!isOutOfStock && !isLowStock && (
+                            <span className="badge badge-completed" style={{ background: '#10b981', color: 'white' }}>
+                              In Stock
+                            </span>
+                          )}
+                        </td>
+                        <td>
+                          <div style={{ display: 'flex', gap: '0.3rem' }}>
+                            <button
+                              onClick={() => handleUpdateStock(item.id, item.stock - 1)}
+                              className="btn-secondary"
+                              style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem' }}
+                            >
+                              -1
+                            </button>
+                            <button
+                              onClick={() => handleUpdateStock(item.id, item.stock + 1)}
+                              className="btn-secondary"
+                              style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem' }}
+                            >
+                              +1
+                            </button>
+                            <button
+                              onClick={() => handleUpdateStock(item.id, item.stock + 5)}
+                              className="btn-secondary"
+                              style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem' }}
+                            >
+                              +5
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* RENDER ANALYTICS TAB */}
       {activeTab === 'analytics' && (
-        <div className={styles.dashboardContainer}>
+        <div className={styles.analyticsLayout}>
           {/* Metrics summary cards */}
           <div className={styles.analyticsGrid}>
             <div className={`${styles.analyticsCard} glass`}>
@@ -724,6 +1020,37 @@ export default function DashboardPage() {
                 </span>
               </div>
             </div>
+          </div>
+
+          {/* Itemized Sales breakdown report table */}
+          <div className={`${styles.salesReportSection} glass`} style={{ marginTop: '2.5rem', padding: '2rem', borderRadius: '16px' }}>
+            <h3 style={{ fontSize: '1.45rem', fontWeight: 800, marginBottom: '1.5rem' }}>Itemized Sales Report</h3>
+            {sortedSalesBreakdown.length === 0 ? (
+              <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textAlign: 'center', padding: '2rem' }}>
+                No completed sales data available yet to generate a breakdown report.
+              </div>
+            ) : (
+              <div className={styles.historyTableWrapper}>
+                <table className={styles.historyTable}>
+                  <thead>
+                    <tr>
+                      <th>Menu Item</th>
+                      <th>Brews Delivered (Qty)</th>
+                      <th>Gross Revenue</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sortedSalesBreakdown.map((item, idx) => (
+                      <tr key={idx}>
+                        <td style={{ fontWeight: 700 }}>{item.name}</td>
+                        <td style={{ fontWeight: 600 }}>{item.quantity} units</td>
+                        <td style={{ fontWeight: 600, color: 'var(--accent-gold)' }}>{formatPrice(item.revenue)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       )}
