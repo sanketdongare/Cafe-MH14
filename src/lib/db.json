@@ -331,9 +331,29 @@
       "notes": "Pika",
       "status": "Completed",
       "createdAt": "2026-06-09T06:18:41.760Z"
+    },
+    {
+      "id": "CF-1008",
+      "customerName": "sanket",
+      "items": [
+        {
+          "id": "ps4rp4c",
+          "menuItemId": "m4",
+          "name": "Cardamom Pistachio Kulfi Scone",
+          "quantity": 1,
+          "selectedOptions": {
+            "Cream Option": "Clotted Cream"
+          },
+          "price": 190
+        }
+      ],
+      "total": 190,
+      "notes": "sd",
+      "status": "Received",
+      "createdAt": "2026-06-20T10:34:40.114Z"
     }
   ],
-  "orderCounter": 1008,
+  "orderCounter": 1009,
   "reviews": [
     {
       "id": "rev1",
@@ -380,14 +400,14 @@
       "id": "i1",
       "name": "Coffee Beans",
       "stock": 12.5,
-      "minStock": 5.0,
+      "minStock": 5,
       "unit": "kg"
     },
     {
       "id": "i2",
       "name": "Chicory Powder",
-      "stock": 3.0,
-      "minStock": 2.0,
+      "stock": 3,
+      "minStock": 2,
       "unit": "kg"
     },
     {
@@ -400,29 +420,29 @@
     {
       "id": "i4",
       "name": "Paneer (Cottage Cheese)",
-      "stock": 8.0,
-      "minStock": 4.0,
+      "stock": 8,
+      "minStock": 4,
       "unit": "kg"
     },
     {
       "id": "i5",
       "name": "Cultured Butter",
-      "stock": 10.0,
-      "minStock": 3.0,
+      "stock": 10,
+      "minStock": 3,
       "unit": "kg"
     },
     {
       "id": "i6",
       "name": "Whole Milk",
-      "stock": 45.0,
-      "minStock": 20.0,
+      "stock": 45,
+      "minStock": 20,
       "unit": "L"
     },
     {
       "id": "i7",
       "name": "Rosewater & Gulkand",
       "stock": 2.5,
-      "minStock": 1.0,
+      "minStock": 1,
       "unit": "L"
     },
     {

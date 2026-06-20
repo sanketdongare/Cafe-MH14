@@ -602,3 +602,57 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
+/* Razorpay Payment badges & details */
+.paymentBadgePaid {
+  background: rgba(5, 150, 105, 0.15);
+  color: #10b981;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border: 1px solid rgba(5, 150, 105, 0.3);
+  text-transform: uppercase;
+}
+
+.paymentBadgeUnpaid {
+  background: rgba(217, 119, 6, 0.15);
+  color: var(--accent-gold);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  text-transform: uppercase;
+}
+
+.paymentDetails {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: monospace;
+  margin-top: 0.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.badgePaid {
+  background: rgba(5, 150, 105, 0.15);
+  color: #10b981;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(5, 150, 105, 0.3);
+}
+
+.badgeUnpaid {
+  background: rgba(217, 119, 6, 0.15);
+  color: var(--accent-gold);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid rgba(217, 119, 6, 0.3);
+}
+

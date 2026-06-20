@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import crypto from 'crypto';
 
 export async function GET(request: Request) {
   try {
@@ -27,13 +28,63 @@ export async function POST(request: Request) {
     if (!body.customerName || !body.items || body.items.length === 0) {
       return NextResponse.json({ error: 'Missing customer details or items' }, { status: 400 });
     }
+
+    const {
+      customerName,
+      items,
+      notes,
+      razorpayOrderId,
+      razorpayPaymentId,
+      razorpaySignature
+    } = body;
+
+    let paymentStatus: 'Pending' | 'Paid' | 'Failed' = 'Pending';
+
+    // Verify payment if payment details are sent
+    if (razorpayPaymentId && razorpayOrderId) {
+      const keyId = process.env.RAZORPAY_KEY_ID;
+      const keySecret = process.env.RAZORPAY_KEY_SECRET;
+
+      const isMock = !keyId || !keySecret || 
+                     keyId.trim() === '' || 
+                     keyId.includes('placeholder') || 
+                     keyId.includes('your_') ||
+                     razorpayPaymentId.startsWith('mock_pay_');
+
+      if (isMock) {
+        paymentStatus = 'Paid';
+      } else {
+        if (!razorpaySignature) {
+          return NextResponse.json({ error: 'Missing payment verification signature' }, { status: 400 });
+        }
+        
+        // Real signature verification
+        const text = razorpayOrderId + '|' + razorpayPaymentId;
+        const generatedSignature = crypto
+          .createHmac('sha256', keySecret)
+          .update(text)
+          .digest('hex');
+
+        if (generatedSignature === razorpaySignature) {
+          paymentStatus = 'Paid';
+        } else {
+          return NextResponse.json({ error: 'Payment verification failed: Invalid signature' }, { status: 400 });
+        }
+      }
+    }
+
     const order = db.createOrder({
-      customerName: body.customerName,
-      items: body.items,
-      notes: body.notes
+      customerName,
+      items,
+      notes,
+      paymentStatus,
+      razorpayOrderId,
+      razorpayPaymentId
     });
+
     return NextResponse.json(order, { status: 201 });
   } catch (error) {
+    console.error('Error in creating order:', error);
     return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
   }
 }

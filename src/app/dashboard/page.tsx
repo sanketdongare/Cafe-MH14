@@ -484,12 +484,24 @@ export default function DashboardPage() {
               {activeOrders.map((order) => (
                 <div key={order.id} className={`${styles.orderCard} glass`}>
                   <div className={styles.orderCardHeader}>
-                    <span className={styles.orderId}>{order.id}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span className={styles.orderId}>{order.id}</span>
+                      {order.paymentStatus === 'Paid' ? (
+                        <span className={styles.paymentBadgePaid}>Paid</span>
+                      ) : (
+                        <span className={styles.paymentBadgeUnpaid}>Unpaid</span>
+                      )}
+                    </div>
                     <span className={styles.orderAge}>{getOrderAgeString(order.createdAt)}</span>
                   </div>
 
                   <div className={styles.orderCardBody}>
                     <div className={styles.customerName}>{order.customerName}</div>
+                    {order.razorpayPaymentId && (
+                      <div className={styles.paymentDetails}>
+                        <span>Razorpay ID: {order.razorpayPaymentId}</span>
+                      </div>
+                    )}
                     
                     <ul className={styles.orderItemsList}>
                       {order.items.map((item) => (
@@ -564,6 +576,7 @@ export default function DashboardPage() {
                   <th>Items Ordered</th>
                   <th>Date &amp; Time</th>
                   <th>Total Price</th>
+                  <th>Payment</th>
                   <th>Final Status</th>
                 </tr>
               </thead>
@@ -580,6 +593,13 @@ export default function DashboardPage() {
                       {new Date(o.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </td>
                     <td style={{ fontWeight: 600 }}>{formatPrice(o.total)}</td>
+                    <td>
+                      {o.paymentStatus === 'Paid' ? (
+                        <span className={styles.badgePaid}>Paid</span>
+                      ) : (
+                        <span className={styles.badgeUnpaid}>Pending</span>
+                      )}
+                    </td>
                     <td>
                       <span className={`badge badge-${o.status.toLowerCase()}`}>{o.status}</span>
                     </td>

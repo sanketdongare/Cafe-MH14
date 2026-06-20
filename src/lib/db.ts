@@ -90,7 +90,14 @@ class MockDatabase {
     return this.readState().orders.find((order) => order.id.toLowerCase() === id.toLowerCase());
   }
 
-  createOrder(order: { customerName: string; items: OrderItem[]; notes?: string }): Order {
+  createOrder(order: {
+    customerName: string;
+    items: OrderItem[];
+    notes?: string;
+    paymentStatus?: Order['paymentStatus'];
+    razorpayOrderId?: string;
+    razorpayPaymentId?: string;
+  }): Order {
     const state = this.readState();
     const id = `CF-${state.orderCounter++}`;
     const total = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -101,7 +108,10 @@ class MockDatabase {
       total: parseFloat(total.toFixed(2)),
       notes: order.notes,
       status: 'Received',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      paymentStatus: order.paymentStatus,
+      razorpayOrderId: order.razorpayOrderId,
+      razorpayPaymentId: order.razorpayPaymentId
     };
     state.orders.push(newOrder);
     this.writeState(state);

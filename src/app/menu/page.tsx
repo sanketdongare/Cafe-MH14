@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Script from 'next/script';
 import styles from './menu.module.css';
 import { MenuItem, OrderItem, formatPrice } from '@/lib/types';
 
@@ -21,6 +22,14 @@ export default function MenuPage() {
   const [customerName, setCustomerName] = useState('');
   const [notes, setNotes] = useState('');
   const [placingOrder, setPlacingOrder] = useState(false);
+
+  // Razorpay Mock Modal State
+  const [showMockRazorpay, setShowMockRazorpay] = useState(false);
+  const [mockOrderDetails, setMockOrderDetails] = useState<{
+    id: string;
+    amount: number;
+    currency: string;
+  } | null>(null);
 
   // Customization Modal State
   const [customizingItem, setCustomizingItem] = useState<MenuItem | null>(null);
@@ -149,6 +158,49 @@ export default function MenuPage() {
   const tax = cartSubtotal * 0.08;
   const cartTotal = cartSubtotal + tax;
 
+  const completeFinalOrder = async (paymentDetails?: {
+    razorpayOrderId: string;
+    razorpayPaymentId: string;
+    razorpaySignature?: string;
+  }) => {
+    try {
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          customerName,
+          items: cart,
+          notes: notes.trim() || undefined,
+          razorpayOrderId: paymentDetails?.razorpayOrderId,
+          razorpayPaymentId: paymentDetails?.razorpayPaymentId,
+          razorpaySignature: paymentDetails?.razorpaySignature
+        })
+      });
+
+      if (response.ok) {
+        const order = await response.json();
+        // Clear state
+        setCart([]);
+        setCustomerName('');
+        setNotes('');
+        setShowMockRazorpay(false);
+        setMockOrderDetails(null);
+        // Redirect to tracking page
+        router.push(`/track?id=${order.id}`);
+      } else {
+        const errData = await response.json();
+        alert(errData.error || 'Failed to place order.');
+      }
+    } catch (err) {
+      console.error('Error placing order:', err);
+      alert('Network error. Failed to place order.');
+    } finally {
+      setPlacingOrder(false);
+    }
+  };
+
   // Checkout Placement
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -164,34 +216,66 @@ export default function MenuPage() {
     setPlacingOrder(true);
 
     try {
-      const response = await fetch('/api/orders', {
+      const payOrderResponse = await fetch('/api/payment/create-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          customerName,
-          items: cart,
-          notes: notes.trim() || undefined
+          items: cart
         })
       });
 
-      if (response.ok) {
-        const order = await response.json();
-        // Clear state
-        setCart([]);
-        setCustomerName('');
-        setNotes('');
-        // Redirect to tracking page
-        router.push(`/track?id=${order.id}`);
-      } else {
-        const errData = await response.json();
-        alert(errData.error || 'Failed to place order.');
+      if (!payOrderResponse.ok) {
+        const errData = await payOrderResponse.json();
+        alert(errData.error || 'Failed to initialize payment gateway.');
+        setPlacingOrder(false);
+        return;
       }
+
+      const payOrderData = await payOrderResponse.json();
+      const { id: razorpayOrderId, amount, currency, key, isMock } = payOrderData;
+
+      if (isMock) {
+        // Open simulated mock payment dialog
+        setMockOrderDetails({ id: razorpayOrderId, amount, currency });
+        setShowMockRazorpay(true);
+        return;
+      }
+
+      // Real Razorpay modal configuration
+      const options = {
+        key,
+        amount,
+        currency,
+        name: 'Cafe MH 14',
+        description: 'Cafe MH 14 Order Payment',
+        order_id: razorpayOrderId,
+        handler: async function (response: any) {
+          await completeFinalOrder({
+            razorpayOrderId: response.razorpay_order_id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpaySignature: response.razorpay_signature
+          });
+        },
+        prefill: {
+          name: customerName,
+        },
+        theme: {
+          color: '#d97706'
+        },
+        modal: {
+          ondismiss: function() {
+            setPlacingOrder(false);
+          }
+        }
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
     } catch (err) {
       console.error('Error placing order:', err);
-      alert('Network error. Failed to place order.');
-    } finally {
+      alert('Network error. Failed to initiate payment gateway.');
       setPlacingOrder(false);
     }
   };
@@ -517,6 +601,93 @@ export default function MenuPage() {
           </div>
         </div>
       )}
+
+      {/* Mock Razorpay Payment Simulator Modal */}
+      {showMockRazorpay && mockOrderDetails && (
+        <div className={styles.modalOverlay}>
+          <div className={`${styles.modalContent} ${styles.mockPayContent}`}>
+            <div className={styles.mockPayHeader}>
+              <div className={styles.mockPayLogo}>
+                <span className={styles.mockPayTitle}>razorpay</span>
+                <span className={styles.mockPaySubTitle}>SIMULATOR</span>
+              </div>
+              <div className={styles.mockPayStatusLabel}>Sandbox Mode</div>
+            </div>
+            
+            <div className={styles.mockPayBody}>
+              <div className={styles.mockPayAmountCard}>
+                <span className={styles.mockPayAmountLabel}>Paying To</span>
+                <span className={styles.mockPayMerchant}>Cafe MH 14</span>
+                <div className={styles.mockPayDivider}></div>
+                <div className={styles.mockPayFlex}>
+                  <div>
+                    <span className={styles.mockPayAmountLabel}>Amount</span>
+                    <div className={styles.mockPayTotalValue}>
+                      ₹{Math.round(mockOrderDetails.amount / 100)}
+                    </div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <span className={styles.mockPayAmountLabel}>Order ID</span>
+                    <div className={styles.mockPayOrderIdVal}>
+                      {mockOrderDetails.id}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.mockPayInfoAlert}>
+                This is a simulated Razorpay checkout environment. No real funds will be processed.
+              </div>
+
+              <div className={styles.mockPayActionButtons}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const mockPaymentId = `mock_pay_${Math.random().toString(36).substring(2, 10)}`;
+                    completeFinalOrder({
+                      razorpayOrderId: mockOrderDetails.id,
+                      razorpayPaymentId: mockPaymentId
+                    });
+                  }}
+                  className={styles.mockPayBtnSuccess}
+                >
+                  Simulate Success
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={() => {
+                    alert('Simulated payment failure.');
+                    setShowMockRazorpay(false);
+                    setPlacingOrder(false);
+                    setMockOrderDetails(null);
+                  }}
+                  className={styles.mockPayBtnFailure}
+                >
+                  Simulate Failure
+                </button>
+              </div>
+            </div>
+            
+            <div className={styles.mockPayFooter}>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowMockRazorpay(false);
+                  setPlacingOrder(false);
+                  setMockOrderDetails(null);
+                }}
+                className={styles.mockPayBtnCancel}
+              >
+                Cancel payment flow
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Razorpay Script */}
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
     </div>
   );
 }

@@ -31,6 +31,9 @@ export interface Order {
   notes?: string;
   status: 'Received' | 'Preparing' | 'Ready' | 'Completed' | 'Cancelled';
   createdAt: string;
+  paymentStatus?: 'Pending' | 'Paid' | 'Failed';
+  razorpayOrderId?: string;
+  razorpayPaymentId?: string;
 }
 
 // Helper to format prices dynamically in Rupees (whole numbers only)
