@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Header from '../components/Header';
 import styles from './page.module.css';
 
 interface Reservation {
@@ -92,9 +91,7 @@ export default function ReservePage() {
   };
 
   return (
-    <>
-      <Header />
-      <main className={styles.main}>
+    <main className={styles.main}>
         {/* Page Hero */}
         <section className={styles.heroSection}>
           <h1 className={styles.pageTitle}>Artisanal Seating</h1>
@@ -321,6 +318,5 @@ export default function ReservePage() {
           )}
         </section>
       </main>
-    </>
   );
 }

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Header from '../components/Header';
 import styles from './page.module.css';
 
 interface Review {
@@ -154,7 +153,6 @@ export default function ReviewsPage() {
 
   return (
     <>
-      <Header />
       <main className={styles.main}>
         {/* Page Hero */}
         <section className={styles.heroSection}>
