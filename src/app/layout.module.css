@@ -11,9 +11,7 @@
   z-index: 50;
   width: 100%;
   border-bottom: 1px solid var(--glass-border);
-  background: rgba(252, 251, 249, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg-primary);
 }
 
 .nav {
